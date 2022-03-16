@@ -1,0 +1,36 @@
+$backgroundColor: hsl(223, 19%, 93%)
+$borderRadius: 5px
+
+@mixin flexCenter
+    display: flex
+    justify-content: center
+    align-items: center
+
+.root
+    display: flex
+    min-height: 35px
+
+.button
+    @include flexCenter
+
+    cursor: pointer
+    min-width: 30px
+
+    border: none
+    outline: none
+
+    background-color: $backgroundColor
+
+    &:first-child
+        border-radius: $borderRadius 0 0 $borderRadius
+
+    &:last-child
+        border-radius: 0 $borderRadius $borderRadius 0
+
+.result
+    @include flexCenter
+
+    color: hsl(238, 40%, 52%)
+    font-weight: 500
+    min-width: 30px
+    background-color: $backgroundColor

@@ -5,7 +5,7 @@ const defaultValue = {
     username: null,
 };
 
-export const UserContext = createContext(defaultValue);
+const UserContext = createContext(defaultValue);
 
 export const useUserContext = () => useContext(UserContext);
 
