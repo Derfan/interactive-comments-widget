@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
 
+import mockData from '../data.json';
+
 const defaultValue = {
     image: null,
     username: null,
@@ -10,16 +12,8 @@ const UserContext = createContext(defaultValue);
 export const useUserContext = () => useContext(UserContext);
 
 export const UserContextProvider = ({ children }) => {
-    const currentUser = {
-        image: { 
-            png: "avatars/image-juliusomo.png",
-            webp: "avatars/image-juliusomo.webp",
-        },
-        username: "juliusomo"
-    };
-
     return (
-        <UserContext.Provider value={currentUser}>
+        <UserContext.Provider value={mockData.currentUser}>
             {children}
         </UserContext.Provider>
     );
