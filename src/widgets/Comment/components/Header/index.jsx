@@ -1,9 +1,10 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 
 import { Image } from '../../../../components';
 import cn from './style.module.sass';
 
-export const Header = ({ author, createdAt, createdByCurrentUser }) => (
+export const Header = memo(({ author, createdAt, createdByCurrentUser }) => (
     <header className={cn.root}>
         <Image paths={author.image} alt="avatar" />
 
@@ -13,7 +14,7 @@ export const Header = ({ author, createdAt, createdByCurrentUser }) => (
 
         <span>{createdAt}</span>
     </header>
-);
+));
 
 Header.defaultProps = {
     createdAt: '',
