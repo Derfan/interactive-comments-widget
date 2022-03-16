@@ -1,7 +1,22 @@
-export const CommentsList = () => {
+import { Card } from '../../components';
+import cn from './styles.module.sass';
+
+export const CommentsList = ({ comments }) => {
+    if (!comments.length) return null;
+
     return (
-        <div>
-            CommentsList component
-        </div>
+        <>
+            {comments.map(({ content, replies }) => (
+                <>
+                    <Card>{content}</Card>
+
+                    {replies && (
+                        <div className={cn.replies}>
+                            <CommentsList comments={replies} />
+                        </div>
+                    )}
+                </>
+            ))}
+        </>
     );
 };
