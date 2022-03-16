@@ -6,7 +6,7 @@ import { Button, Image, Card, Textarea } from '../../components';
 
 import cn from './styles.module.sass';
 
-export const CommentForm = ({ placeholder, buttonLabel }) => {
+export const CommentForm = ({ placeholder, buttonLabel, onSubmit }) => {
     const input = useRef();
     const user = useUserContext();
 
@@ -16,6 +16,9 @@ export const CommentForm = ({ placeholder, buttonLabel }) => {
         }
 
         console.log('TextArea value:', input.current.value);
+        if (onSubmit) {
+            onSubmit(input.current.value);
+        }
         input.current.value = '';
     };
 
@@ -39,4 +42,5 @@ export const CommentForm = ({ placeholder, buttonLabel }) => {
 CommentForm.propTypes = {
     placeholder: PropTypes.string,
     buttonLabel: PropTypes.string,
+    onSubmit: PropTypes.func,
 };
