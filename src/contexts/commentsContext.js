@@ -37,7 +37,9 @@ const reducer = (state, action) => {
         case actions.ADD_COMMENT:
             return [...state, action.payload];
         case actions.REPLY_TO_COMMENT: {
-            const comment = findComment(state, action.payload.replyingTo);
+            const comment = findComment(state, action.payload.replyingTo.commentId);
+
+            action.payload.replyingTo = action.payload.replyingTo.username;
 
             if (comment.replies) {
                 comment.replies.push(action.payload);
@@ -48,11 +50,12 @@ const reducer = (state, action) => {
             return Array.from(state);
         }
         case actions.EDIT_COMMENT: {
-            const comment = findComment(state, action.payload.id);
+            const { id, content } = action.payload;
+            const comment = findComment(state, id);
 
-            comment.content = action.payload.content;
+            comment.content = content;
 
-            return [...state];
+            return Array.from(state);
         }
         case actions.DELETE_COMMENT:
             return [...state];
@@ -76,7 +79,7 @@ let nextId = 5;
 export const useCommentsContext = () => {
     const { comments, dispatch } = useContext(CommentsContext);
 
-    const handleAddComment = ({ content, idForReply }, user) => {
+    const handleAddComment = ({ content, replyingTo }, user) => {
         const payload = {
             user,
             content,
@@ -87,8 +90,8 @@ export const useCommentsContext = () => {
         };
         let type = actions.ADD_COMMENT;
 
-        if (idForReply) {
-            payload.replyingTo = idForReply;
+        if (replyingTo) {
+            payload.replyingTo = replyingTo;
             type = actions.REPLY_TO_COMMENT;
         }
 

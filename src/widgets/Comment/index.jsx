@@ -19,7 +19,7 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
         setIsEditable(false);
     };
     const handleSubmitReply = (content) => {
-        handleAddComment({ content, idForReply: id }, currentUser);
+        handleAddComment({ content, replyingTo: { commentId: id, username: user.username } }, currentUser);
         setIsReplyVisible(false);
     }
     const handleDeleteButtonClick = () => handleDeleteComment({ id });
