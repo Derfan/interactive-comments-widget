@@ -1,10 +1,7 @@
-$backgroundColor: hsl(223, 19%, 93%)
-$borderRadius: 5px
+@import '../../styles/mixins'
+@import '../../styles/variables'
 
-@mixin flexCenter
-    display: flex
-    justify-content: center
-    align-items: center
+$borderRadius: 5px
 
 .root
     display: flex
@@ -19,7 +16,7 @@ $borderRadius: 5px
     border: none
     outline: none
 
-    background-color: $backgroundColor
+    background-color: $light-gray
 
     &:first-child
         border-radius: $borderRadius 0 0 $borderRadius
@@ -30,7 +27,7 @@ $borderRadius: 5px
 .result
     @include flexCenter
 
-    color: hsl(238, 40%, 52%)
+    color: $moderate-blue
     font-weight: 500
     min-width: 30px
-    background-color: $backgroundColor
+    background-color: $light-gray

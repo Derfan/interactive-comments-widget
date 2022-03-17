@@ -1,8 +1,25 @@
+@import '../../styles/mixins'
+
 .card
     display: flex
     flex-wrap: wrap
     align-items: center
     gap: 16px
 
+    @include for-tablet-up
+        flex-wrap: nowrap
+        align-items: start
+
+.field
+    @include for-tablet-up
+        order: 2
+
+.image
+    @include for-tablet-up
+        order: 1
+
 .button
     margin-left: auto
+
+    @include for-tablet-up
+        order: 3

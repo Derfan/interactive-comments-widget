@@ -16,18 +16,28 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
 
     const handleScoreChange = () => {};
     const handleSave = () => {
-        console.log('new value:', editableField.current.value);
+        const payload = { id, content: editableField.current.value };
+
+        console.log('payload:', payload);
         setIsEditable(false);
     };
     const handleReply = () => {
         setIsReplyVisible(true);
     };
-    const handleDelete = () => {};
+    const handleDelete = () => {
+        console.log('payload:', { id });
+    };
     const handleEdit = () => {
         setIsEditable(true);
     };
-    const handleSubmit = (value) => {
-        console.log('reply value:', value);
+    const handleSubmitReply = (value) => {
+        const payload = {
+            content: value,
+            replyingTo: user.username,
+            createdAt: 'just now',
+        };
+
+        console.log('payload:', payload);
         setIsReplyVisible(false);
     };
 
@@ -62,7 +72,7 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
                 <CommentForm
                     placeholder="Add a comment..."
                     buttonLabel="Reply"
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmitReply}
                 />
             )}
         </>

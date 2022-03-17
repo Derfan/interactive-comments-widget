@@ -24,9 +24,9 @@ export const CommentForm = ({ placeholder, buttonLabel, onSubmit }) => {
 
     return (
         <Card className={cn.card}>
-            <Textarea ref={input} placeholder={placeholder} />
+            <Textarea ref={input} className={cn.field} placeholder={placeholder} />
 
-            <Image paths={user.image} alt="avatar" />
+            <Image className={cn.image} paths={user.image} alt="avatar" />
 
             <Button
                 type="cta"

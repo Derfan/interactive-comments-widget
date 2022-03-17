@@ -31,16 +31,13 @@ export const Image = ({ paths, size, className, alt }) => {
     if (!urls) return null;
 
     return (
-        <picture className={cn.root}> 
+        <picture className={cns(cn.root, className)}> 
             <source srcSet={urls.webp} type="image/webp" />
             <source srcSet={urls.png} type="image/png" />
             <img
                 src={urls.png}
                 className={
-                    cns(
-                        { [cn.md]: size === 'md', [cn.sm]: size === 'sm'},
-                        className,
-                    )
+                    cns({ [cn.md]: size === 'md', [cn.sm]: size === 'sm'})
                 }
                 alt={alt}
             />
