@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-import { useUserContext } from '../../contexts';
+import { useUserContext, useCommentsContext } from '../../contexts';
 import { Card, Textarea, Counter } from '../../components';
 import { Header, Content, Controls } from './components';
 import { CommentForm } from '../CommentForm';
@@ -10,36 +10,22 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
     const editableField = useRef(null);
     const [isEditable, setIsEditable] = useState(false);
     const [isReplyVisible, setIsReplyVisible] = useState(false);
-    const { username } = useUserContext();
-    const createdByCurrentUser = user.username === username;
-    const commentMessage = replyingTo ? `@${replyingTo} ${content}` : content;
+    const currentUser = useUserContext();
+    const { handleAddComment, handleDeleteComment, handleEditComment } = useCommentsContext();
+    const createdByCurrentUser = user.username === currentUser.username;
 
-    const handleScoreChange = () => {};
-    const handleSave = () => {
-        const payload = { id, content: editableField.current.value };
-
-        console.log('payload:', payload);
+    const handleSaveModifiedComment = () => {
+        handleEditComment({ id, content: editableField.current.value });
         setIsEditable(false);
     };
-    const handleReply = () => {
-        setIsReplyVisible(true);
-    };
-    const handleDelete = () => {
-        console.log('payload:', { id });
-    };
-    const handleEdit = () => {
-        setIsEditable(true);
-    };
-    const handleSubmitReply = (value) => {
-        const payload = {
-            content: value,
-            replyingTo: user.username,
-            createdAt: 'just now',
-        };
-
-        console.log('payload:', payload);
+    const handleSubmitReply = (content) => {
+        handleAddComment({ content, idForReply: id }, currentUser);
         setIsReplyVisible(false);
-    };
+    }
+    const handleDeleteButtonClick = () => handleDeleteComment({ id });
+    const handleScoreChange = () => {};
+    const handleReplyButtonClick = () => setIsReplyVisible(true);
+    const handleEditButtonClick = () => setIsEditable(true);
 
     return (
         <>
@@ -51,7 +37,7 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
                 />
 
                 {isEditable
-                    ? <Textarea ref={editableField} defaultValue={commentMessage} />
+                    ? <Textarea ref={editableField} defaultValue={content} />
                     : <Content content={content} replyingTo={replyingTo} />
                 }
 
@@ -61,10 +47,10 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
                     createdByCurrentUser={createdByCurrentUser}
                     isEditable={isEditable}
                     isReplyVisible={isReplyVisible}
-                    onSave={handleSave}
-                    onReply={handleReply}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
+                    onSave={handleSaveModifiedComment}
+                    onReply={handleReplyButtonClick}
+                    onDelete={handleDeleteButtonClick}
+                    onEdit={handleEditButtonClick}
                 />
             </Card>
 

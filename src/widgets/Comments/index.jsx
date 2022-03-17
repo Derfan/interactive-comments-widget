@@ -3,7 +3,7 @@ import { Comment } from '../Comment';
 import { TreeList } from '../../components';
 
 export const Comments = () => {
-    const comments = useCommentsContext();
+    const { comments } = useCommentsContext();
 
     return (
         <TreeList

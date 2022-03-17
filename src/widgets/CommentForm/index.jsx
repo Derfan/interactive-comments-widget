@@ -14,11 +14,7 @@ export const CommentForm = ({ placeholder, buttonLabel, onSubmit }) => {
         if (!input.current.value) {
             return input.current.focus();
         }
-
-        console.log('TextArea value:', input.current.value);
-        if (onSubmit) {
-            onSubmit(input.current.value);
-        }
+        onSubmit(input.current.value);
         input.current.value = '';
     };
 
@@ -39,8 +35,12 @@ export const CommentForm = ({ placeholder, buttonLabel, onSubmit }) => {
     );
 };
 
+CommentForm.defaultProps = {
+    placeholder: '',
+};
+
 CommentForm.propTypes = {
+    buttonLabel: PropTypes.string.isRequired,
+    onSubmit: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
-    buttonLabel: PropTypes.string,
-    onSubmit: PropTypes.func,
 };

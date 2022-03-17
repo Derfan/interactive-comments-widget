@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { UserContextProvider, CommentsContextProvider } from './contexts';
 import { App } from './widgets';
 import reportWebVitals from './reportWebVitals';
 
@@ -7,7 +9,11 @@ import './index.sass';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <UserContextProvider>
+      <CommentsContextProvider>
+        <App />
+      </CommentsContextProvider>
+    </UserContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
