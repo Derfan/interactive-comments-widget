@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer } from 'react';
 
+import { findElement } from '../helpers';
 import mockData from '../data.json';
 
 const CommentsContext = createContext([]);
@@ -13,31 +14,12 @@ const actions = {
     REPLY_TO_COMMENT: 'REPLY_TO_COMMENT',
 };
 
-const findComment = (entities, id) => {
-  if (!entities?.length) return null;
-
-  let comment = null;
-
-  for (let i = 0; i < entities.length; i++) {
-    const item = entities[i];
-
-    if (item.id === id) {
-      comment = item;
-      break;
-    }
-
-    comment = findComment(item.replies, id);
-  }
-
-  return comment;
-};
-
 const reducer = (state, action) => {
     switch (action.type) {
         case actions.ADD_COMMENT:
             return [...state, action.payload];
         case actions.REPLY_TO_COMMENT: {
-            const comment = findComment(state, action.payload.replyingTo.commentId);
+            const comment = findElement(state, action.payload.replyingTo.commentId);
 
             action.payload.replyingTo = action.payload.replyingTo.username;
 
@@ -51,7 +33,7 @@ const reducer = (state, action) => {
         }
         case actions.EDIT_COMMENT: {
             const { id, content } = action.payload;
-            const comment = findComment(state, id);
+            const comment = findElement(state, id);
 
             comment.content = content;
 
