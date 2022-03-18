@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
+import cns from 'classnames';
 
 import { Button } from '../../../../components';
 import cn from './styles.module.sass';
 
 export const Controls = ({
+    className,
     createdByCurrentUser,
     isEditable,
     isReplyVisible,
@@ -14,14 +16,14 @@ export const Controls = ({
 }) => {
     if (isEditable) {
         return (
-            <div className={cn.controls}>
+            <div className={cns(cn.controls, className)}>
                 <Button type="cta" onClick={onSave}>Update</Button>
             </div>
         )
     }
 
     return (
-        <div className={cn.controls}>
+        <div className={cns(cn.controls, className)}>
             {createdByCurrentUser
                 ? (
                     <>

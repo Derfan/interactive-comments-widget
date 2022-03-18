@@ -1,11 +1,12 @@
 @import '../../styles/variables'
+@import '../../styles/mixins'
 
 .button
-    display: flex
-    justify-content: center
-    align-items: center
+    @include flex-center
+
     gap: 10px
 
+    cursor: pointer
     color: $moderate-blue
     font-size: 16px
     font-weight: 800

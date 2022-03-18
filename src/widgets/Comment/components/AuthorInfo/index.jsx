@@ -1,11 +1,12 @@
 import { memo } from 'react';
 import PropTypes from 'prop-types';
+import cns from 'classnames';
 
 import { Image } from '../../../../components';
 import cn from './style.module.sass';
 
-export const Header = memo(({ author, createdAt, createdByCurrentUser }) => (
-    <header className={cn.root}>
+export const AuthorInfo = memo(({ className, author, createdAt, createdByCurrentUser }) => (
+    <header className={cns(cn.root, className)}>
         <Image paths={author.image} alt="avatar" />
 
         <span className={cn.userName}>{author.username}</span>
@@ -16,12 +17,13 @@ export const Header = memo(({ author, createdAt, createdByCurrentUser }) => (
     </header>
 ));
 
-Header.defaultProps = {
+AuthorInfo.defaultProps = {
+    className: '',
     createdAt: '',
     createdByCurrentUser: false,
 };
 
-Header.propTypes = {
+AuthorInfo.propTypes = {
     author: PropTypes.shape({
         username: PropTypes.string,
         image: PropTypes.shape({
@@ -29,6 +31,7 @@ Header.propTypes = {
             webp: PropTypes.string,
         }),
     }).isRequired,
+    className: PropTypes.string,
     createdAt: PropTypes.string,
     createdByCurrentUser: PropTypes.bool,
 };

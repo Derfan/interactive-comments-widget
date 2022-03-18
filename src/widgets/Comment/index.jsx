@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 
 import { useUserContext, useCommentsContext } from '../../contexts';
 import { Card, Textarea, Counter } from '../../components';
-import { Header, Content, Controls } from './components';
+import { AuthorInfo, Content, Controls } from './components';
 import { CommentForm } from '../CommentForm';
 import cn from './styles.module.sass';
 
@@ -30,7 +30,7 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
     return (
         <>
             <Card className={cn.root}>
-                <Header
+                <AuthorInfo
                     author={user}
                     createdAt={createdAt}
                     createdByCurrentUser={createdByCurrentUser}
@@ -41,9 +41,10 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
                     : <Content content={content} replyingTo={replyingTo} />
                 }
 
-                <Counter initialCount={score} onChange={handleScoreChange} />
+                <Counter className={cn.score} initialCount={score} onChange={handleScoreChange} />
 
                 <Controls
+                    className={cn.controls}
                     createdByCurrentUser={createdByCurrentUser}
                     isEditable={isEditable}
                     isReplyVisible={isReplyVisible}

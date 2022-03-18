@@ -7,8 +7,11 @@ $borderRadius: 5px
     display: flex
     height: 35px
 
+    @include for-tablet-up
+        flex-direction: column
+
 .button
-    @include flexCenter
+    @include flex-center
 
     cursor: pointer
     width: 30px
@@ -21,13 +24,25 @@ $borderRadius: 5px
     &:first-child
         border-radius: $borderRadius 0 0 $borderRadius
 
+        @include for-tablet-up
+            border-radius: $borderRadius $borderRadius 0 0
+
     &:last-child
         border-radius: 0 $borderRadius $borderRadius 0
 
+        @include for-tablet-up
+            border-radius: 0 0 $borderRadius $borderRadius
+
+    @include for-tablet-up
+        min-height: 30px
+
 .result
-    @include flexCenter
+    @include flex-center
 
     color: $moderate-blue
     font-weight: 500
     min-width: 30px
     background-color: $light-gray
+
+    @include for-tablet-up
+        min-height: 20px

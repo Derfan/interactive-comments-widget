@@ -1,6 +1,12 @@
+@import '../../styles/mixins'
+
 .root
     display: flex
     flex-direction: column
     gap: 20px
 
     margin: 20px 16px
+
+    @include for-tablet-up
+        margin: 64px auto
+        width: 730px
