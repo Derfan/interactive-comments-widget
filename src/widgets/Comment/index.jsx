@@ -30,16 +30,18 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
     return (
         <>
             <Card className={cn.root}>
-                <AuthorInfo
-                    author={user}
-                    createdAt={createdAt}
-                    createdByCurrentUser={createdByCurrentUser}
-                />
+                <div className={cn.info}>
+                    <AuthorInfo
+                        author={user}
+                        createdAt={createdAt}
+                        createdByCurrentUser={createdByCurrentUser}
+                    />
 
-                {isEditable
-                    ? <Textarea ref={editableField} defaultValue={content} />
-                    : <Content content={content} replyingTo={replyingTo} />
-                }
+                    {isEditable
+                        ? <Textarea ref={editableField} defaultValue={content} />
+                        : <Content content={content} replyingTo={replyingTo} />
+                    }
+                </div>
 
                 <Counter className={cn.score} initialCount={score} onChange={handleScoreChange} />
 

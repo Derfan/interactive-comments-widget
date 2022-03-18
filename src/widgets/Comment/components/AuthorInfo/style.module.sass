@@ -1,15 +1,37 @@
 @import '../../../../styles/variables'
+@import '../../../../styles/mixins'
 
 .root
     display: flex
     align-items: center
     gap: 10px
 
+    @include for-tablet-up
+        gap: 16px
+
+.self
+    @include for-tablet-up
+        gap: 0
+
+        .userName
+            margin-left: 16px
+
+        .createdAt
+            margin-left: 16px
+
 .userName
     color: $dark-blue
     font-weight: 500
 
 .label
-    background-color: $moderate-blue
     color: $white
-    padding: 2px 6px
+    font-size: 12px
+    line-height: 1.5
+    font-weight: 500
+
+    padding: 0 8px
+    border-radius: 2px
+    background-color: $moderate-blue
+
+    @include for-tablet-up
+        margin-left: 8px

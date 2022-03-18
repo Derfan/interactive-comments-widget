@@ -8,16 +8,30 @@
 
     @include for-tablet-up
         position: relative
-        padding-left: 70px
+
+        flex-wrap: nowrap
+        align-items: flex-start
+        gap: 24px
+
+.info
+    display: flex
+    flex-direction: column
+    gap: 10px
+
+    @include for-tablet-up
+        order: 2
+        gap: 14px
+        line-height: 1.5
 
 .score
     @include for-tablet-up
-        position: absolute
-        top: 20px
-        left: 20px
+        order: 1
 
 .controls
+    margin-left: auto
+
     @include for-tablet-up
+        order: 3
         position: absolute
-        top: 16px
-        right: 16px
+        top: 30px
+        right: 24px

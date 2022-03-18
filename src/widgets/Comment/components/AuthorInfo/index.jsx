@@ -6,14 +6,14 @@ import { Image } from '../../../../components';
 import cn from './style.module.sass';
 
 export const AuthorInfo = memo(({ className, author, createdAt, createdByCurrentUser }) => (
-    <header className={cns(cn.root, className)}>
+    <header className={cns(cn.root, { [cn.self]: createdByCurrentUser },  className)}>
         <Image paths={author.image} alt="avatar" />
 
         <span className={cn.userName}>{author.username}</span>
 
         {createdByCurrentUser && <span className={cn.label}>you</span>}
 
-        <span>{createdAt}</span>
+        <span className={cn.createdAt}>{createdAt}</span>
     </header>
 ));
 

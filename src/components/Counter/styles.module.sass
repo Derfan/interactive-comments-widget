@@ -8,6 +8,7 @@ $borderRadius: 5px
     height: 35px
 
     @include for-tablet-up
+        height: auto
         flex-direction: column
 
 .button
@@ -25,16 +26,17 @@ $borderRadius: 5px
         border-radius: $borderRadius 0 0 $borderRadius
 
         @include for-tablet-up
-            border-radius: $borderRadius $borderRadius 0 0
+            border-radius: $borderRadius * 2 $borderRadius * 2 0 0
 
     &:last-child
         border-radius: 0 $borderRadius $borderRadius 0
 
         @include for-tablet-up
-            border-radius: 0 0 $borderRadius $borderRadius
+            border-radius: 0 0 $borderRadius * 2 $borderRadius * 2
 
     @include for-tablet-up
-        min-height: 30px
+        width: 40px
+        min-height: 34px
 
 .result
     @include flex-center
@@ -45,4 +47,4 @@ $borderRadius: 5px
     background-color: $light-gray
 
     @include for-tablet-up
-        min-height: 20px
+        min-height: 32px

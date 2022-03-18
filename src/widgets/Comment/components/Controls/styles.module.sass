@@ -1,6 +1,9 @@
+@import '../../../../styles/mixins'
+
 .controls
     display: flex
     align-items: center
     gap: 10px
 
-    margin-left: auto
+    @include for-tablet-up
+        gap: 28px
