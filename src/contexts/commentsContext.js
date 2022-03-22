@@ -12,6 +12,7 @@ const actions = {
     EDIT_COMMENT: 'EDIT_COMMENT',
     DELETE_COMMENT: 'DELETE_COMMENT',
     REPLY_TO_COMMENT: 'REPLY_TO_COMMENT',
+    CHANGE_SCORE: 'CHANGE_SCORE',
 };
 
 const reducer = (state, action) => {
@@ -40,6 +41,9 @@ const reducer = (state, action) => {
             return Array.from(state);
         }
         case actions.DELETE_COMMENT:
+            console.log('DELETE_COMMENT payload', action.payload);
+            return [...state];
+        case actions.CHANGE_SCORE:
             return [...state];
         default:
             throw new Error(`Unknown action type: ${action.type}`);
@@ -82,6 +86,13 @@ export const useCommentsContext = () => {
     };
     const handleDeleteComment = (payload) => dispatch({ type: actions.DELETE_COMMENT, payload });
     const handleEditComment = (payload) => dispatch({ type: actions.EDIT_COMMENT, payload });
+    const handleScoreChange = (payload) => dispatch({ type: actions.CHANGE_SCORE, payload });
 
-    return { comments, handleAddComment, handleDeleteComment, handleEditComment };
+    return {
+        comments,
+        handleAddComment,
+        handleDeleteComment,
+        handleEditComment,
+        handleScoreChange,
+    };
 };

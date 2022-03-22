@@ -1,18 +1,23 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 
 import { useUserContext, useCommentsContext } from '../../contexts';
 import { Card, Textarea, Counter } from '../../components';
 import { AuthorInfo, Content, Controls } from './components';
 import { CommentForm } from '../CommentForm';
+import { DeleteModal } from '../DeleteModal';
 import cn from './styles.module.sass';
 
 export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => {
     const editableField = useRef(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
     const [isReplyVisible, setIsReplyVisible] = useState(false);
     const currentUser = useUserContext();
     const { handleAddComment, handleDeleteComment, handleEditComment } = useCommentsContext();
-    const createdByCurrentUser = user.username === currentUser.username;
+    const createdByCurrentUser = useMemo(
+        () => user.username === currentUser.username,
+        [user.username, currentUser.username],
+    );
 
     const handleSaveModifiedComment = () => {
         handleEditComment({ id, content: editableField.current.value });
@@ -22,10 +27,15 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
         handleAddComment({ content, replyingTo: { commentId: id, username: user.username } }, currentUser);
         setIsReplyVisible(false);
     }
-    const handleDeleteButtonClick = () => handleDeleteComment({ id });
     const handleScoreChange = () => {};
     const handleReplyButtonClick = () => setIsReplyVisible(true);
     const handleEditButtonClick = () => setIsEditable(true);
+    const handleOpenDeleteModal = () => setIsModalOpen(true);
+    const handleCloseDeleteModal = () => setIsModalOpen(false);
+    const handleConfirmDeletion = () => {
+        handleDeleteComment({ id });
+        handleCloseDeleteModal();
+    };
 
     return (
         <>
@@ -52,7 +62,7 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
                     isReplyVisible={isReplyVisible}
                     onSave={handleSaveModifiedComment}
                     onReply={handleReplyButtonClick}
-                    onDelete={handleDeleteButtonClick}
+                    onDelete={handleOpenDeleteModal}
                     onEdit={handleEditButtonClick}
                 />
             </Card>
@@ -64,6 +74,12 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
                     onSubmit={handleSubmitReply}
                 />
             )}
+
+            <DeleteModal
+                isOpen={isModalOpen}
+                onClose={handleCloseDeleteModal}
+                onConfirm={handleConfirmDeletion}
+            />
         </>
     );
 };
