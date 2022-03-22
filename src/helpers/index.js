@@ -1,17 +1,17 @@
-export const findElement = (entities, id) => {
-  if (!entities?.length) return null;
+export const normalizeData = (entities) => {
+  const result = [];
 
-  let comment = null;
+  const walk = (entities, result, parentId = null) => {
+    if (!entities?.length) return null;
 
-  for (let i = 0; i < entities.length; i++) {
-    const item = entities[i];
+    for (const { replies, ...item} of entities) {
+      result.push({ parentId, ...item });
 
-    if (item.id === id) return item;
+      walk(replies, result, item.id);
+    }
+  };
 
-    comment = findElement(item.replies, id);
+  walk(entities, result);
 
-    if (comment) return comment;
-  }
-
-  return comment;
+  return result;
 };

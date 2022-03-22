@@ -13,7 +13,12 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
     const [isEditable, setIsEditable] = useState(false);
     const [isReplyVisible, setIsReplyVisible] = useState(false);
     const currentUser = useUserContext();
-    const { handleAddComment, handleDeleteComment, handleEditComment } = useCommentsContext();
+    const {
+        handleAddComment,
+        handleDeleteComment,
+        handleEditComment,
+        handleCommentScoreChange,
+    } = useCommentsContext();
     const createdByCurrentUser = useMemo(
         () => user.username === currentUser.username,
         [user.username, currentUser.username],
@@ -27,7 +32,7 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
         handleAddComment({ content, replyingTo: { commentId: id, username: user.username } }, currentUser);
         setIsReplyVisible(false);
     }
-    const handleScoreChange = () => {};
+    const handleScoreChange = (operationType) => handleCommentScoreChange({ id, operationType });
     const handleReplyButtonClick = () => setIsReplyVisible(true);
     const handleEditButtonClick = () => setIsEditable(true);
     const handleOpenDeleteModal = () => setIsModalOpen(true);
@@ -53,7 +58,11 @@ export const Comment = ({ id, user, createdAt, content, score, replyingTo }) => 
                     }
                 </div>
 
-                <Counter className={cn.score} initialCount={score} onChange={handleScoreChange} />
+                <Counter
+                    className={cn.score}
+                    count={score}
+                    onChange={handleScoreChange}
+                />
 
                 <Controls
                     className={cn.controls}

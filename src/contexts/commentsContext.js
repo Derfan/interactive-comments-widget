@@ -1,11 +1,14 @@
 import { createContext, useContext, useReducer } from 'react';
 
-import { findElement } from '../helpers';
+import { normalizeData } from '../helpers';
 import mockData from '../data.json';
 
 const CommentsContext = createContext([]);
 
-const initialState = mockData.comments;
+const initialState = {
+    comments: mockData.comments,
+    flatComments: normalizeData(mockData.comments),
+};
 
 const actions = {
     ADD_COMMENT: 'ADD_COMMENT',
@@ -18,33 +21,62 @@ const actions = {
 const reducer = (state, action) => {
     switch (action.type) {
         case actions.ADD_COMMENT:
-            return [...state, action.payload];
+            return {
+                ...state,
+                flatComments: [...state.flatComments, action.payload]
+            };
         case actions.REPLY_TO_COMMENT: {
-            const comment = findElement(state, action.payload.replyingTo.commentId);
+            const { replyingTo: { username } } = action.payload;
 
-            action.payload.replyingTo = action.payload.replyingTo.username;
-
-            if (comment.replies) {
-                comment.replies.push(action.payload);
-            } else {
-                comment.replies = [action.payload];
-            }
-
-            return Array.from(state);
+            return {
+                ...state,
+                flatComments: [
+                    ...state.flatComments,
+                    { ...action.payload, replyingTo: username }
+                ],
+            };
         }
         case actions.EDIT_COMMENT: {
             const { id, content } = action.payload;
-            const comment = findElement(state, id);
 
-            comment.content = content;
-
-            return Array.from(state);
+            return {
+                ...state,
+                flatComments: state.flatComments.map(
+                    comment => comment.id === id
+                        ? { ...comment, content }
+                        : comment,
+                ),
+            };
         }
-        case actions.DELETE_COMMENT:
-            console.log('DELETE_COMMENT payload', action.payload);
-            return [...state];
-        case actions.CHANGE_SCORE:
-            return [...state];
+        case actions.DELETE_COMMENT: {
+            const { id } = action.payload;
+
+            return {
+                ...state,
+                flatComments: state.flatComments.filter(comment => comment.id !== id)
+            };
+        }
+        case actions.CHANGE_SCORE: {
+            const { id, operationType } = action.payload;
+            
+            return {
+                ...state,
+                flatComments: state.flatComments.map(comment => {
+                    if (comment.id !== id) return comment;
+
+                    let score = comment.score;
+
+                    if (operationType === 'increment') {
+                        score += 1;
+                    }
+                    if (operationType === 'decrement') {
+                        score -= 1;
+                    }
+
+                    return { ...comment, score };
+                }),
+            }
+        }
         default:
             throw new Error(`Unknown action type: ${action.type}`);
     }
@@ -54,7 +86,7 @@ export const CommentsContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     return (
-        <CommentsContext.Provider value={{ comments: state, dispatch }}>
+        <CommentsContext.Provider value={{ ...state, dispatch }}>
             {children}
         </CommentsContext.Provider>
     );
@@ -63,16 +95,16 @@ export const CommentsContextProvider = ({ children }) => {
 let nextId = 5;
 
 export const useCommentsContext = () => {
-    const { comments, dispatch } = useContext(CommentsContext);
+    const { flatComments, dispatch } = useContext(CommentsContext);
 
     const handleAddComment = ({ content, replyingTo }, user) => {
         const payload = {
+            parentId: replyingTo?.commentId || null,
+            id: nextId,
             user,
             content,
-            id: nextId,
             createdAt: "just now",
             score: 0,
-            replies: [],
         };
         let type = actions.ADD_COMMENT;
 
@@ -86,13 +118,13 @@ export const useCommentsContext = () => {
     };
     const handleDeleteComment = (payload) => dispatch({ type: actions.DELETE_COMMENT, payload });
     const handleEditComment = (payload) => dispatch({ type: actions.EDIT_COMMENT, payload });
-    const handleScoreChange = (payload) => dispatch({ type: actions.CHANGE_SCORE, payload });
+    const handleCommentScoreChange = (payload) => dispatch({ type: actions.CHANGE_SCORE, payload });
 
     return {
-        comments,
+        comments: flatComments,
         handleAddComment,
         handleDeleteComment,
         handleEditComment,
-        handleScoreChange,
+        handleCommentScoreChange,
     };
 };
