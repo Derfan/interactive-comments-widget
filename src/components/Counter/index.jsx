@@ -12,13 +12,21 @@ export const Counter = ({ className, count, onChange }) => {
 
     return (
         <div className={cns(cn.root, className)}>
-            <button className={cn.button} onClick={handleChange('increment')}>
+            <button
+                aria-label="increment"
+                className={cn.button}
+                onClick={handleChange('increment')}
+            >
                 <Plus />
             </button>
 
             <div className={cn.result}>{count}</div>
 
-            <button className={cn.button} onClick={handleChange('decrement')}>
+            <button
+                aria-label="decrement"
+                className={cn.button}
+                onClick={handleChange('decrement')}
+            >
                 <Minus />
             </button>
         </div>
